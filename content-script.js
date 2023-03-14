@@ -31,31 +31,36 @@ let keysPressed = {
     Coloring : false
 };
 
+function StoreInLocal(selectedText){
+    //store it in localstorage
+    let CurrentContent = { SelectedVal : selectedText};
+    localStorage.setItem("HightlightInfo", JSON.stringify(CurrentContent));
+    //SelectedContent = [...SelectedContent, CurrentContent];
+    //localStorage.setItem("HightlightInfo", JSON.stringify(SelectedContent));
+};
+
 function StoreAndColor(selectedText){
-    if (selectedText !== ''){
+    console.log("In StoreAndColor", selectedText);
+
+    if (selectedText.isCollapsed == false){ //if selected text isnt empty,
         if (selectedText.rangeCount && selectedText.getRangeAt) {
-            range = selectedText.getRangeAt(0);
-          }
-          // Set design mode to on
-          document.designMode = "on";
-          if (range) {
+            range = selectedText.getRangeAt(0); //reading first one- in firefox there is an option to select multiple times.
+            //https://javascript.info/selection-range#:~:text=using%20the%20method%3A-,getRangeAt(i),-%E2%80%93%20get%20i%2Dth
+            console.log("range val", range );
+        }
+        // Set design mode to on
+        document.designMode = "on";
+        if (range) {
             selectedText.removeAllRanges();
             selectedText.addRange(range);
-          }
-        //color
+        }
         // Colorize text
         document.execCommand("ForeColor", false, "red");
         // Set design mode to off
         document.designMode = "off";
-        //store it in localstorage
-        let CurrentContent = { Text : selectedText};
-        SelectedContent = [...SelectedContent, CurrentContent];
+        StoreInLocal(selectedText);
     }
 }
-
-// document.addEventListener('select', (event)=>{
-//     alert("selected", event.key);
-// });
 
 
 document.addEventListener('keydown', (event) => {
@@ -65,10 +70,9 @@ document.addEventListener('keydown', (event) => {
         console.log("pressed ", event.key);
    }  
    else if((event.key == 'c' || event.key == 'C') && keysPressed.Alt == true && keysPressed.Coloring == false){
-        // alert("coloring it!")
-        // setTimeout(() => {
-        // console.log("coloriing");
-        // }, 5000);
+        let Content =   document.getSelection();
+        console.log("in event ", Content);
+        console.log( "ID ", document.getSelection().valueOf("id"));
         StoreAndColor(document.getSelection());
         console.log("coloriing");
         keysPressed.Coloring = true
