@@ -1,0 +1,15 @@
+{
+    "name":"Highlight the selected text.",
+    "version" : "1.0",
+    "manifest_version": 3,
+    "permissions": [
+        "activeTab",
+        "scripting"
+      ],
+    "content_scripts": [
+        {
+            "matches": ["https://*/*"],
+          "js": ["content-script.js"]
+        }
+    ]
+}
