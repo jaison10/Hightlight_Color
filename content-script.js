@@ -33,6 +33,7 @@ let keysPressed = {
 
 function StoreInLocal(selectedText){
     //store it in localstorage
+    console.log("JSON ", JSON.stringify(selectedText));
     let CurrentContent = { SelectedVal : selectedText};
     localStorage.setItem("HightlightInfo", JSON.stringify(CurrentContent));
     //SelectedContent = [...SelectedContent, CurrentContent];
