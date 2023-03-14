@@ -23,6 +23,9 @@
 //which key has been pressed:
 // if (event.key == 'ArrowUp') { }
 
+//cart
+let SelectedContent = [];
+
 let keysPressed = {
     Alt : false,
     Coloring : false
@@ -44,6 +47,9 @@ function StoreAndColor(selectedText){
         document.execCommand("ForeColor", false, "red");
         // Set design mode to off
         document.designMode = "off";
+        //store it in localstorage
+        let CurrentContent = { Text : selectedText};
+        SelectedContent = [...SelectedContent, CurrentContent];
     }
 }
 
