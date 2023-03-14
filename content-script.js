@@ -87,3 +87,14 @@ document.addEventListener('keyup', (event) => {
         console.log("alt left");
    }
 });
+
+
+
+//try
+document.addEventListener("selectionchange",(event)=>{
+    setTimeout(()=>{
+        alert(document.getSelection());
+    },1000)
+});
+
+
