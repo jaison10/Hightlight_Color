@@ -31,10 +31,18 @@ let keysPressed = {
     Coloring : false
 };
 
-function StoreInLocal(selectedText){
+function StoreInLocal(SelectedDOM){
     //store it in localstorage
-    console.log("JSON ", JSON.stringify(selectedText));
-    let CurrentContent = { SelectedVal : selectedText};
+    console.log("SelecteDOM ", JSON.stringify(SelectedDOM));
+    console.log("ParentElem ", SelectedDOM.commonAncestorContainer.parentElement);
+    console.log("SelectedHTML  ", SelectedDOM.commonAncestorContainer.innerHTML);
+    console.log("SelectedText ", SelectedDOM.commonAncestorContainer.innerText);
+
+    let CurrentContent = { 
+        // SelectedParentElem : SelectedDOM.parentElement,
+        // SelectedHTML : SelectedDOM.parentElement.innerHTML,
+        // SelectedText : SelectedDOM.parentElement.innerText
+    };
     localStorage.setItem("HightlightInfo", JSON.stringify(CurrentContent));
     //SelectedContent = [...SelectedContent, CurrentContent];
     //localStorage.setItem("HightlightInfo", JSON.stringify(SelectedContent));
@@ -55,11 +63,12 @@ function StoreAndColor(selectedText){
             selectedText.removeAllRanges();
             selectedText.addRange(range);
         }
+
         // Colorize text
         document.execCommand("ForeColor", false, "red");
         // Set design mode to off
         document.designMode = "off";
-        StoreInLocal(selectedText);
+        StoreInLocal(range);
     }
 }
 
@@ -89,12 +98,11 @@ document.addEventListener('keyup', (event) => {
 });
 
 
-
 //try
-document.addEventListener("selectionchange",(event)=>{
-    setTimeout(()=>{
-        alert(document.getSelection());
-    },1000)
-});
+// document.addEventListener("selectionchange",(event)=>{
+//     setTimeout(()=>{
+//         alert(document.getSelection());
+//     },1000)
+// });
 
 
