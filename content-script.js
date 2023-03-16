@@ -33,19 +33,24 @@ let keysPressed = {
 
 function StoreInLocal(SelectedDOM){
     //store it in localstorage
-    console.log("SelecteDOM ", JSON.stringify(SelectedDOM));
-    console.log("ParentElem ", SelectedDOM.commonAncestorContainer.parentElement);
+    console.log("SelectText ClassName ", SelectedDOM.commonAncestorContainer.className);
+    console.log("SelectText ID ", SelectedDOM.commonAncestorContainer.id);
     console.log("SelectedHTML  ", SelectedDOM.commonAncestorContainer.innerHTML);
     console.log("SelectedText ", SelectedDOM.commonAncestorContainer.innerText);
+    console.log("ParentElem ClassName ", SelectedDOM.commonAncestorContainer.parentElement.className);
+    console.log("ParentElem ID ", SelectedDOM.commonAncestorContainer.parentElement.id);
 
     let CurrentContent = { 
-        // SelectedParentElem : SelectedDOM.parentElement,
-        // SelectedHTML : SelectedDOM.parentElement.innerHTML,
-        // SelectedText : SelectedDOM.parentElement.innerText
+        SelectTextClassName : SelectedDOM.commonAncestorContainer.className,
+        SelectTextID : SelectedDOM.commonAncestorContainer.id,
+        SelectedHTML : SelectedDOM.commonAncestorContainer.innerHTML,
+        SelectedText : SelectedDOM.commonAncestorContainer.innerText,
+        ParentElemClassName : SelectedDOM.commonAncestorContainer.parentElement.className,
+        ParentElemID : SelectedDOM.commonAncestorContainer.parentElement.id,
     };
-    localStorage.setItem("HightlightInfo", JSON.stringify(CurrentContent));
-    //SelectedContent = [...SelectedContent, CurrentContent];
-    //localStorage.setItem("HightlightInfo", JSON.stringify(SelectedContent));
+    // localStorage.setItem("HightlightInfo", JSON.stringify(CurrentContent));
+    SelectedContent = [...SelectedContent, CurrentContent];
+    localStorage.setItem("HightlightInfo", JSON.stringify(SelectedContent));
 };
 
 function StoreAndColor(selectedText){
@@ -57,18 +62,22 @@ function StoreAndColor(selectedText){
             //https://javascript.info/selection-range#:~:text=using%20the%20method%3A-,getRangeAt(i),-%E2%80%93%20get%20i%2Dth
             console.log("range val", range );
         }
-        // Set design mode to on
-        document.designMode = "on";
+        
         if (range) {
-            selectedText.removeAllRanges();
+            // Set design mode to on
+            document.designMode = "on";
+            //adding to range
             selectedText.addRange(range);
+            // Colorize text
+            document.execCommand("ForeColor", false, "white");
+            document.execCommand("BackColor", false, "black");
+            // Set design mode to off
+            document.designMode = "off";
+            //storing in local storage
+            StoreInLocal(range);
+            //remove selected default selection
+            selectedText.removeAllRanges();
         }
-
-        // Colorize text
-        document.execCommand("ForeColor", false, "red");
-        // Set design mode to off
-        document.designMode = "off";
-        StoreInLocal(range);
     }
 }
 
@@ -89,13 +98,13 @@ document.addEventListener('keydown', (event) => {
    }
 },);
 
-document.addEventListener('keyup', (event) => {
-   console.log("key left ", event.key);
-   if(event.key == 'Alt') {
-        keysPressed.Alt = false;
-        console.log("alt left");
-   }
-});
+// document.addEventListener('keyup', (event) => {
+//    console.log("key left ", event.key);
+//    if(event.key == 'Alt') {
+//         keysPressed.Alt = false;
+//         console.log("alt left");
+//    }
+// });
 
 
 //try
@@ -105,4 +114,12 @@ document.addEventListener('keyup', (event) => {
 //     },1000)
 // });
 
+addEventListener('DOMContentLoaded', (event) => {
+    //read json from localstorage
+    var selectedText = localStorage.getItem("HightlightInfo");
+    //create ranges.
+    for (eachSel of selectedText){
+        console.log(eachSel);
+    }
+});
 
