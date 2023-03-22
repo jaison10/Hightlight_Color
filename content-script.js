@@ -135,7 +135,14 @@ window.addEventListener("load", (event) => {
     var selectedText = selectedText = JSON.parse(localStorage.getItem("HightlightInfo"));
     console.log(selectedText);
     //create ranges.
-    selectedText.forEach((score) => {
-        console.log(score);
+    selectedText.forEach((eachTxt) => {
+        console.log(eachTxt);
+        console.log(typeof(eachTxt));
+        console.log(eachTxt.SelectedText);
+        const test = eachTxt.SelectedText
+        var range = document.createRange();
+        range.selectNode(test);
+        selection.addRange(range);
     });
+
 });
