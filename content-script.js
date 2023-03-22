@@ -48,9 +48,14 @@ function StoreInLocal(SelectedDOM){
         ParentElemClassName : SelectedDOM.commonAncestorContainer.parentElement.className,
         ParentElemID : SelectedDOM.commonAncestorContainer.parentElement.id,
     };
+    var alreadySelectedTxt = JSON.parse( localStorage.getItem("HightlightInfo"));
+    alreadySelectedTxt.push(CurrentContent);
+    localStorage.setItem("HightlightInfo", JSON.stringify(alreadySelectedTxt));
+
     // localStorage.setItem("HightlightInfo", JSON.stringify(CurrentContent));
-    SelectedContent = [...SelectedContent, CurrentContent];
-    localStorage.setItem("HightlightInfo", JSON.stringify(SelectedContent));
+    // SelectedContent = [...SelectedContent, CurrentContent];
+    // localStorage.setItem("HightlightInfo", JSON.stringify(SelectedContent));
+
 };
 
 function StoreAndColor(selectedText){
@@ -114,12 +119,23 @@ document.addEventListener('keydown', (event) => {
 //     },1000)
 // });
 
-addEventListener('DOMContentLoaded', (event) => {
-    //read json from localstorage
-    var selectedText = localStorage.getItem("HightlightInfo");
-    //create ranges.
-    for (eachSel of selectedText){
-        console.log(eachSel);
-    }
-});
+// window.addEventListener('DOMContentLoaded', (event) => {
+//     console.log("LOADED");
+//     //read json from localstorage
+//     var selectedText = localStorage.getItem("HightlightInfo");
+//     //create ranges.
+//     for (eachSel of selectedText){
+//         console.log(eachSel);
+//     }
+// });
 
+
+window.addEventListener("load", (event) => {
+    console.log("loaaaaded");
+    var selectedText = selectedText = JSON.parse(localStorage.getItem("HightlightInfo"));
+    console.log(selectedText);
+    //create ranges.
+    selectedText.forEach((score) => {
+        console.log(score);
+    });
+});
