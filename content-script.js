@@ -140,9 +140,17 @@ window.addEventListener("load", (event) => {
         console.log(typeof(eachTxt));
         console.log(eachTxt.SelectedText);
         const test = eachTxt.SelectedText
-        var range = document.createRange();
-        range.selectNode(test);
-        selection.addRange(range);
+        // var range = document.createRange();
+        // range.selectNode(test);
+        // selection.addRange(range);
+        if (test !== undefined){
+            let text = document.getElementById(eachTxt.ParentElemID).innerHTML;
+            console.log("Found Text ", text);
+            let re = new RegExp(test,"g"); // search for all instances
+		    let newText = text.replace(re, `<mark>${test}</mark>`);
+            console.log("NEW TEXT ", newText);
+		    document.getElementById(eachTxt.ParentElemID).innerHTML = newText;
+        }
     });
 
 });
