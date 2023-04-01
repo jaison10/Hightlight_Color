@@ -8,13 +8,13 @@ function StoreInLocal(SelectedDOM, EntireDOM){
     let alrdyPrsntJSONFrmStrg;
     var alrdySelctdTxt = [];
     //store it in localstorage
-    console.log("SelectText ClassName ", SelectedDOM.commonAncestorContainer.className);
-    console.log("SelectText ID ", SelectedDOM.commonAncestorContainer.id);
-    console.log("SelectedHTML  ", SelectedDOM.commonAncestorContainer.innerHTML);
-    console.log("SelectedText ", SelectedDOM.commonAncestorContainer.innerText);
-    console.log("ParentElem ClassName ", SelectedDOM.commonAncestorContainer.parentElement.className);
-    console.log("ParentElem ID ", SelectedDOM.commonAncestorContainer.parentElement.id);
-    console.log("Entire DOM is ",  EntireDOM);
+    // console.log("SelectText ClassName ", SelectedDOM.commonAncestorContainer.className);
+    // console.log("SelectText ID ", SelectedDOM.commonAncestorContainer.id);
+    // console.log("SelectedHTML  ", SelectedDOM.commonAncestorContainer.innerHTML);
+    // console.log("SelectedText ", SelectedDOM.commonAncestorContainer.innerText);
+    // console.log("ParentElem ClassName ", SelectedDOM.commonAncestorContainer.parentElement.className);
+    // console.log("ParentElem ID ", SelectedDOM.commonAncestorContainer.parentElement.id);
+    // console.log("Entire DOM is ",  EntireDOM);
 
     let CurrentContent = { 
         SelectTextClassName : SelectedDOM.commonAncestorContainer.className,
@@ -26,11 +26,10 @@ function StoreInLocal(SelectedDOM, EntireDOM){
         DOM: EntireDOM,
     };
     alrdyPrsntJSONFrmStrg = localStorage.getItem("HightlightInfo");
-    if(alrdyPrsntJSONFrmStrg !== ""){
+    if(alrdyPrsntJSONFrmStrg !== "" && alrdyPrsntJSONFrmStrg !== null){
         alrdySelctdTxt = JSON.parse(alrdyPrsntJSONFrmStrg);
     }
-    alrdySelctdTxt.push(CurrentContent);
-    // console.log("Converted JSON ",  JSON.stringify(alreadySelectedTxt));
+    alrdySelctdTxt.push( CurrentContent);
     localStorage.setItem("HightlightInfo", JSON.stringify(alrdySelctdTxt));
 };
 
@@ -90,22 +89,21 @@ document.addEventListener('mouseup', (event) => {
 window.addEventListener("load", (event) => {
     console.log("loaaaaded");
     var FullTxtFrmStrg;
+    var eachSelctdTxt;
     var rtrndJSONFrmStrg = localStorage.getItem("HightlightInfo"); 
-    if (rtrndJSONFrmStrg !== ""){
+    if (rtrndJSONFrmStrg !== "" && rtrndJSONFrmStrg !== null){
         FullTxtFrmStrg = JSON.parse(rtrndJSONFrmStrg);
         console.log(FullTxtFrmStrg);
         //create ranges.
         FullTxtFrmStrg.forEach((eachVal) => {
-            var eachSelctdTxt = eachVal.SelectedText
+            eachSelctdTxt = eachVal.SelectedText
             console.log("TEXT :  ", eachSelctdTxt);
             if ((document.documentElement.textContent || document.documentElement.innerText).indexOf(eachSelctdTxt) > -1) {
                 console.log(eachSelctdTxt, " - Value Found!");
+                // let node = document.getElementById(eachVal.ParentElemID);
+                //console.log("Found Text ", node);
+                //console.log("Entire DOM ", eachVal.DOM);
             }else{console.log(eachSelctdTxt, "-  Value NOT Found!");}
-            // if (eachSelctdTxt !== undefined){
-            //     let node = document.getElementById(eachVal.ParentElemID);
-            //     console.log("Found Text ", node);
-            //     console.log("Entire DOM ", eachVal.DOM);
-            // }
         });
     }else{
         console.log("No Previously Selected Values Found!");
