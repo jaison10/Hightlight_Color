@@ -98,11 +98,17 @@ window.addEventListener("load", (event) => {
         FullTxtFrmStrg.forEach((eachVal) => {
             eachSelctdTxt = eachVal.SelectedText
             console.log("TEXT :  ", eachSelctdTxt);
+            var FoundIndex = (document.documentElement.textContent || document.documentElement.innerText).indexOf(eachSelctdTxt);
+            
             if ((document.documentElement.textContent || document.documentElement.innerText).indexOf(eachSelctdTxt) > -1) {
                 console.log(eachSelctdTxt, " - Value Found!");
                 // let node = document.getElementById(eachVal.ParentElemID);
                 //console.log("Found Text ", node);
                 //console.log("Entire DOM ", eachVal.DOM);
+                const range = document.createRange();
+                const element = document.body.textContent;
+                const node = element.childNode[0];
+                range.setStart(node, FoundIndex);
             }else{console.log(eachSelctdTxt, "-  Value NOT Found!");}
         });
     }else{
