@@ -5,6 +5,8 @@ let keysPressed = {
 };
 
 function StoreInLocal(SelectedDOM, EntireDOM){
+    let alrdyPrsntJSONFrmStrg;
+    var alrdySelctdTxt = [];
     //store it in localstorage
     console.log("SelectText ClassName ", SelectedDOM.commonAncestorContainer.className);
     console.log("SelectText ID ", SelectedDOM.commonAncestorContainer.id);
@@ -18,15 +20,18 @@ function StoreInLocal(SelectedDOM, EntireDOM){
         SelectTextClassName : SelectedDOM.commonAncestorContainer.className,
         SelectTextID : SelectedDOM.commonAncestorContainer.id,
         SelectedHTML : SelectedDOM.commonAncestorContainer.innerHTML,
-        SelectedText : SelectedDOM.toString(),
+        SelectedText : EntireDOM.toString(),
         ParentElemClassName : SelectedDOM.commonAncestorContainer.parentElement.className,
         ParentElemID : SelectedDOM.commonAncestorContainer.parentElement.id,
         DOM: EntireDOM,
     };
-    var alreadySelectedTxt = JSON.parse( localStorage.getItem("HightlightInfo"));
-    alreadySelectedTxt.push(CurrentContent);
+    alrdyPrsntJSONFrmStrg = localStorage.getItem("HightlightInfo");
+    if(alrdyPrsntJSONFrmStrg !== ""){
+        alrdySelctdTxt = JSON.parse(alrdyPrsntJSONFrmStrg);
+    }
+    alrdySelctdTxt.push(CurrentContent);
     // console.log("Converted JSON ",  JSON.stringify(alreadySelectedTxt));
-    localStorage.setItem("HightlightInfo", JSON.stringify(alreadySelectedTxt));
+    localStorage.setItem("HightlightInfo", JSON.stringify(alrdySelctdTxt));
 };
 
 function StoreAndColor(selectedText){
@@ -57,7 +62,6 @@ function StoreAndColor(selectedText){
     }
 }
 
-
 document.addEventListener('keydown', (event) => {
 //    keysPressed[event.key] = true;
    if(event.key == 'Alt'){
@@ -66,12 +70,9 @@ document.addEventListener('keydown', (event) => {
    }  
    else if((event.key == 'c' || event.key == 'C') && keysPressed.Alt == true && keysPressed.Coloring == false){
         let Content =   document.getSelection();
-        console.log("Window.Getselection value ", window.getSelection());
-        if (window.document.selection){
-            console.log("Window.doc.selection value ", window.document.selection.createRange().text);
-        }
-        console.log("in event ", Content.toString());
-        console.log( "ID ", document.getSelection().valueOf("id"));
+        // console.log("Window.Getselection value ", window.getSelection());
+        // console.log("in event ", Content.toString());
+        // console.log( "ID ", document.getSelection().valueOf("id"));
         StoreAndColor(document.getSelection());
         console.log("coloriing");
         keysPressed.Coloring = true
@@ -86,8 +87,6 @@ document.addEventListener('mouseup', (event) => {
     console.log("Found text" , document.getSelection().toString());
 });
 
-
-
 window.addEventListener("load", (event) => {
     console.log("loaaaaded");
     var FullTxtFrmStrg;
@@ -98,11 +97,15 @@ window.addEventListener("load", (event) => {
         //create ranges.
         FullTxtFrmStrg.forEach((eachVal) => {
             var eachSelctdTxt = eachVal.SelectedText
-            if (eachSelctdTxt !== undefined){
-            let node = document.getElementById(eachVal.ParentElemID);
-            console.log("Found Text ", node);
-            console.log("Entire DOM ", eachVal.DOM);
-            }
+            console.log("TEXT :  ", eachSelctdTxt);
+            if ((document.documentElement.textContent || document.documentElement.innerText).indexOf(eachSelctdTxt) > -1) {
+                console.log(eachSelctdTxt, " - Value Found!");
+            }else{console.log(eachSelctdTxt, "-  Value NOT Found!");}
+            // if (eachSelctdTxt !== undefined){
+            //     let node = document.getElementById(eachVal.ParentElemID);
+            //     console.log("Found Text ", node);
+            //     console.log("Entire DOM ", eachVal.DOM);
+            // }
         });
     }else{
         console.log("No Previously Selected Values Found!");
