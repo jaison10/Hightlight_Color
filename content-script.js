@@ -1,27 +1,3 @@
-// document.addEventListener("mouseup",()=>{
-//     var selectedText = document.getSelection(); 
-//     if ( selectedText !== ''){
-//         console.log("here");
-//         alert(selectedText);
-//     }
-//     else{
-        
-//     }
-// })
-
-// document.addEventListener("keyup",(event)=>{
-//     var selectedText = document.getSelection(); 
-//     if ( selectedText !== ''){
-//         console.log("here");
-//         alert(selectedText);
-//     }
-//     else{
-        
-//     }
-// })
-
-//which key has been pressed:
-// if (event.key == 'ArrowUp') { }
 
 let keysPressed = {
     Alt : false,
@@ -42,7 +18,7 @@ function StoreInLocal(SelectedDOM, EntireDOM){
         SelectTextClassName : SelectedDOM.commonAncestorContainer.className,
         SelectTextID : SelectedDOM.commonAncestorContainer.id,
         SelectedHTML : SelectedDOM.commonAncestorContainer.innerHTML,
-        SelectedText : SelectedDOM.commonAncestorContainer.innerText,
+        SelectedText : SelectedDOM.toString(),
         ParentElemClassName : SelectedDOM.commonAncestorContainer.parentElement.className,
         ParentElemID : SelectedDOM.commonAncestorContainer.parentElement.id,
         DOM: EntireDOM,
@@ -90,7 +66,11 @@ document.addEventListener('keydown', (event) => {
    }  
    else if((event.key == 'c' || event.key == 'C') && keysPressed.Alt == true && keysPressed.Coloring == false){
         let Content =   document.getSelection();
-        console.log("in event ", Content);
+        console.log("Window.Getselection value ", window.getSelection());
+        if (window.document.selection){
+            console.log("Window.doc.selection value ", window.document.selection.createRange().text);
+        }
+        console.log("in event ", Content.toString());
         console.log( "ID ", document.getSelection().valueOf("id"));
         StoreAndColor(document.getSelection());
         console.log("coloriing");
@@ -101,62 +81,30 @@ document.addEventListener('keydown', (event) => {
    }
 },);
 
-// document.addEventListener('keyup', (event) => {
-//    console.log("key left ", event.key);
-//    if(event.key == 'Alt') {
-//         keysPressed.Alt = false;
-//         console.log("alt left");
-//    }
-// });
+document.addEventListener('mouseup', (event) => {
+    console.log("Mouseup fired.");
+    console.log("Found text" , document.getSelection().toString());
+});
 
-
-//try
-// document.addEventListener("selectionchange",(event)=>{
-//     setTimeout(()=>{
-//         alert(document.getSelection());
-//     },1000)
-// });
-
-// window.addEventListener('DOMContentLoaded', (event) => {
-//     console.log("LOADED");
-//     //read json from localstorage
-//     var selectedText = localStorage.getItem("HightlightInfo");
-//     //create ranges.
-//     for (eachSel of selectedText){
-//         console.log(eachSel);
-//     }
-// });
 
 
 window.addEventListener("load", (event) => {
     console.log("loaaaaded");
-    var selectedText = JSON.parse(localStorage.getItem("HightlightInfo"));
-    console.log(selectedText);
-    //create ranges.
-    selectedText.forEach((eachTxt) => {
-        console.log(eachTxt);
-        console.log(typeof(eachTxt));
-        console.log(eachTxt.SelectedText);
-        var test = eachTxt.SelectedText
-        // var range = document.createRange();
-        // range.selectNode(test);
-        // selection.addRange(range);
-        if (test !== undefined){
-            let node = document.getElementById(eachTxt.ParentElemID);
+    var FullTxtFrmStrg;
+    var rtrndJSONFrmStrg = localStorage.getItem("HightlightInfo"); 
+    if (rtrndJSONFrmStrg !== ""){
+        FullTxtFrmStrg = JSON.parse(rtrndJSONFrmStrg);
+        console.log(FullTxtFrmStrg);
+        //create ranges.
+        FullTxtFrmStrg.forEach((eachVal) => {
+            var eachSelctdTxt = eachVal.SelectedText
+            if (eachSelctdTxt !== undefined){
+            let node = document.getElementById(eachVal.ParentElemID);
             console.log("Found Text ", node);
-            // let re = new RegExp(test,"g"); // search for all instances
-		    // let newText = node.replace(re, `<mark>${test}</mark>`);
-            // console.log("NEW TEXT ", newText);
-		    // document.getElementById(eachTxt.ParentElemID).innerHTML = newText;
-
-            // node.setAttribute(
-            //     "style",
-            //     "background-color: yellow; display: inline;"
-            //  );
-            //  test.surroundContents(node);
-
-            console.log("Entire DOM ", eachTxt.DOM);
-        }
-    });
-
+            console.log("Entire DOM ", eachVal.DOM);
+            }
+        });
+    }else{
+        console.log("No Previously Selected Values Found!");
+    }  
 });
